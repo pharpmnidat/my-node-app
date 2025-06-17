@@ -18,7 +18,6 @@ const lineClient = new line.Client(config);
 // ====== MIDDLEWARE ======
 app.use(cors());
 app.use(express.json());
-app.use('/webhook', line.middleware(config));
 
 // ====== ROUTES ======
 
@@ -48,6 +47,7 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
     res.status(500).end();
   }
 });
+
 
 // ====== LINE EVENT HANDLER ======
 async function handleEvent(event) {
