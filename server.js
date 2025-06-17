@@ -1,32 +1,25 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const line = require('@line/bot-sdk');
-const getDrugNames = require('./getDrugNames');       // ดึงรายชื่อยา
-const getDrugDetails = require('./getDrugDetails');   // ดึงรายละเอียดยา
+const getDrugNames = require('./getDrugNames');
+const getDrugDetails = require('./getDrugDetails');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// ====== LINE SDK CONFIG ======
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 const lineClient = new line.Client(config);
 
-// ====== MIDDLEWARE ======
 app.use(cors());
 app.use(express.json());
 
-// ====== ROUTES ======
-
-// ทดสอบหน้าเว็บ
 app.get('/', (req, res) => {
   res.send('✅ Hello from PharstoreApp on Render');
 });
 
-// ดึงรายชื่อยา (ใช้กับ LIFF dropdown หรืออื่น ๆ)
 app.get('/drugs', async (req, res) => {
   try {
     const drugs = await getDrugNames();
@@ -37,7 +30,6 @@ app.get('/drugs', async (req, res) => {
   }
 });
 
-// ====== LINE WEBHOOK ======
 app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
     await Promise.all(req.body.events.map(handleEvent));
@@ -48,8 +40,6 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
   }
 });
 
-
-// ====== LINE EVENT HANDLER ======
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') return;
 
@@ -90,7 +80,6 @@ async function handleEvent(event) {
   return lineClient.replyMessage(event.replyToken, message);
 }
 
-// ====== START SERVER ======
 app.listen(port, () => {
   console.log(`🚀 Server is running on port ${port}`);
 });
