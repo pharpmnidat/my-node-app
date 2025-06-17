@@ -1,0 +1,27 @@
+{
+  "name": "pmnidat-user",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/USERNAME/my-node-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/USERNAME/my-node-app/issues"
+  },
+  "homepage": "https://github.com/USERNAME/my-node-app#readme",
+  "dependencies": {
+    "@line/bot-sdk": "^10.0.0",
+    "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "description": ""
+}
