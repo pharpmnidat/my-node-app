@@ -1,3 +1,9 @@
+console.log('ENV:', process.env.LINE_CHANNEL_SECRET); // 🕵️‍♂️ Debug!
+const config = {
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
+};
+
 const express = require('express');
 const cors = require('cors');
 const line = require('@line/bot-sdk');
@@ -30,15 +36,19 @@ app.get('/drugs', async (req, res) => {
   }
 });
 
+// ✅ อย่ามี middleware ซ้อนตรง use/path
 app.post('/webhook', line.middleware(config), async (req, res) => {
+  // ✅ ต้องใช้ req.body.events
   try {
-    await Promise.all(req.body.events.map(handleEvent));
+    const events = req.body.events;
+    await Promise.all(events.map(handleEvent));
     res.status(200).end();
   } catch (err) {
     console.error('❌ LINE Webhook error:', err);
     res.status(500).end();
   }
 });
+
 
 async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') return;
