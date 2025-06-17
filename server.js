@@ -39,7 +39,7 @@ app.get('/drugs', async (req, res) => {
 });
 
 // ====== LINE WEBHOOK ======
-app.post('/webhook', async (req, res) => {
+app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
     await Promise.all(req.body.events.map(handleEvent));
     res.status(200).end();
